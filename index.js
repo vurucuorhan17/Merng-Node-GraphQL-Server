@@ -16,13 +16,12 @@ const port = process.env.port || 5000;
 
 let devOrProd;
 
-
-switch(process.env.NODENV)
+switch(process.env.NODE_ENV)
 {
-    case "DEV":
+    case "development":
         devOrProd = "mongodb://localhost:27017/merng-db";
         break;
-    case "PROD":
+    case "production":
         devOrProd = MONGODB_URI
     default:
         devOrProd = MONGODB_URI
@@ -34,7 +33,7 @@ const server = new ApolloServer({
     context: ({ req }) => ({ req, pubsub })
 });
 
-mongoose.connect("mongodb://localhost:27017/merng-db", { useNewUrlParser: true, useUnifiedTopology: true})
+mongoose.connect(devOrProd, { useNewUrlParser: true, useUnifiedTopology: true})
 .then(() => {
     console.log("MongoDB Connected");
 })
